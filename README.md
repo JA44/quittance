@@ -1,0 +1,4 @@
+quittance
+=========
+
+impression de quittance
