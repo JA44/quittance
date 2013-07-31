@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="style.css" >
+        <link rel="stylesheet" type="text/css" href="print.css" media="print">
+    </head>
+    <body>
+        <section id="form">
+            <label for="datePayment">Date de paiement</label>
+            <input type="date" id="datePayment" name="datePayment" />
+            <label for="datePayment">Période</label>
+            <input type="month" id="monthPayment" name="datePayment" />
+        </section>
+        <section id="document">
+            <header>
+                <h1 class="center bold border2">Quittance de loyer</h1>
+            </header>
+            <section>
+                <p>
+                    Quittance de loyer du mois de {{month_payment}}  {{year_payment}}
+                </p>
+                <div id="adress" class="border1">
+                    <span class="bold underline">Adresse de la location :</span><br /><br />
+                    {{Adresse}}<br />
+                    {{cp}} {{Ville}}<br />
+                </div>
+                <p>
+                    Je soussigné {{owner}}, propriétaire du logement désigné ci-dessus, déclare avoir reçu de {{tenant}},
+la somme de  {{sum}}  / {{sum_number}} euros, au titre du paiement du loyer et des charges pour la période de location du {{tenant_period_start}} au {{tenant_period_end}} et lui en donne quittance, sous réserve de tous mes droits.
+                </p>
+                <div id="detail" class="border1">
+                    <span class="bold underline">Détail du règlement :</span><br /><br />
+                    Loyer : {{montant_tenant}} euros<br />
+                    Provision pour charges : {{montant_provision}} euros<br />
+                    Total du loyer : {{sum}} euros<br />
+                    Date du paiement: le {{date_payment}}
+                </div>
+                <p id="done">
+                    Fait à {{ville}}, le {{date}}
+                </p>
+                <p id="signature" class="border1">
+                    
+                </p>
+            </section>
+            <footer class="bold center">
+                Cette quittance annule tous les reçus qui auraient pu être établis précédemment en cas de paiement partiel du montant du présent terme. Elle est à conserver pendant cinq ans par le locataire (article 2224 du Code civil).
+            </footer>
+        </section>
+    </body>
+</html>

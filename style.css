@@ -1,0 +1,44 @@
+/* 
+    Document   : style
+    Created on : 31 juil. 2013, 23:28:30
+    Author     : naunaure
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.center{
+    text-align: center;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.underline{
+    text-decoration: underline;
+}
+
+.border1{
+    border: 1px solid #000;
+}
+
+.border2{
+    border: 2px solid #000;
+}
+
+#document h1{
+    background-color: #c5d8f1;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+#adress{
+    width: 75%;
+    height: 100px;
+}
+
+#signature{
+    width: 30%;
+    height: 100px;
+    margin-left: 60%;
+}
