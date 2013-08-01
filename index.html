@@ -12,24 +12,30 @@
             <input type="date" id="datePayment" name="datePayment" />
             <label for="datePayment">Période</label>
             <input type="month" id="monthPayment" name="datePayment" />
+            <button id="validate">Générer && Imprimer</button>
         </section>
         <section id="document">
-            <header>
+            <script type="text/html" id="template">
+                <header>
                 <h1 class="center bold border2">Quittance de loyer</h1>
             </header>
             <section>
+                <br /><br />
                 <p>
                     Quittance de loyer du mois de {{month_payment}}  {{year_payment}}
                 </p>
+                <br />
                 <div id="adress" class="border1">
                     <span class="bold underline">Adresse de la location :</span><br /><br />
-                    {{Adresse}}<br />
+                    {{adress}}<br />
                     {{cp}} {{Ville}}<br />
                 </div>
+                <br /><br />
                 <p>
                     Je soussigné {{owner}}, propriétaire du logement désigné ci-dessus, déclare avoir reçu de {{tenant}},
 la somme de  {{sum}}  / {{sum_number}} euros, au titre du paiement du loyer et des charges pour la période de location du {{tenant_period_start}} au {{tenant_period_end}} et lui en donne quittance, sous réserve de tous mes droits.
                 </p>
+                <br /><br />
                 <div id="detail" class="border1">
                     <span class="bold underline">Détail du règlement :</span><br /><br />
                     Loyer : {{montant_tenant}} euros<br />
@@ -37,16 +43,57 @@ la somme de  {{sum}}  / {{sum_number}} euros, au titre du paiement du loyer et d
                     Total du loyer : {{sum}} euros<br />
                     Date du paiement: le {{date_payment}}
                 </div>
+                <br />
                 <p id="done">
                     Fait à {{ville}}, le {{date}}
                 </p>
-                <p id="signature" class="border1">
-                    
-                </p>
+                <br />
+                <p id="signature" class="border1"></p>
+                <br /><br />
             </section>
             <footer class="bold center">
                 Cette quittance annule tous les reçus qui auraient pu être établis précédemment en cas de paiement partiel du montant du présent terme. Elle est à conserver pendant cinq ans par le locataire (article 2224 du Code civil).
             </footer>
+            </script>
         </section>
+        <script>
+            var Model = function(){
+                this.month_payment = '';
+                this.year_payment = '';
+                this.adress = '';
+                this.cp = '';
+                //TODO
+            };
+            
+            var View = function(el, target){
+                this.el = el;
+                this.target = target;
+            }
+            View.prototype.render = function(model){
+                var template = this.el.innerHTML;
+                for(var key in model){
+                    var reg = new RegExp('{{' + key + '}}');
+                    template = template.replace(reg, model[key]);    
+                }
+                this.target.innerHTML = template;
+            }
+    
+            var Controller = function(model, view){
+                this.model = model;
+                this.view = view;
+            }
+            Controller.prototype.addEvent = function(element, type, fn){
+                element.addEventListener(type, fn, false);
+            }
+            Controller.prototype.onValidate = function(){
+                this.view.render(this.model);
+            }
+            
+            var model = new Model(),
+                view = new View(document.getElementById('template'), document.getElementById('document')),
+                mainController = new Controller(model, view);
+                mainController.addEvent(document.getElementById('validate'), 'click', mainController.onValidate.bind(mainController));
+                
+        </script>
     </body>
 </html>
