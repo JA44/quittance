@@ -14,6 +14,26 @@
             <input type="month" id="monthPayment" name="datePayment" />
             <button id="validate">Générer && Imprimer</button>
         </section>
+        <section id="infos">
+            <h2>Informations</h2>
+            <label for="adress">Adresse :</label>
+            <input type="text" id="adress" name="adress" /><br />
+            <label for="cp">CP :</label>
+            <input type="number" id="cp" name="cp" />
+            <label for="city">Ville :</label>
+            <input type="text" id="city" name="city" /><br />
+            <label for="owner">Propriétaire :</label>
+            <input type="text" id="owner" name="owner" /><br />
+            <label for="tenant">Locataire :</label>
+            <input type="text" id="tenant" name="tenant" /><br />
+            <label for="montant_provision">Provision :</label>
+            <input type="text" id="montant_provision" name="montant_provision" /><br />
+            <label for="montant_tenant">Loyer :</label>
+            <input type="text" id="owner" name="montant_tenant" /><br />
+            <label for="city_quittance">Loyer :</label>
+            <input type="text" id="city_quittance" name="city_quittance" /><br />
+            <button id="save">Sauvegarder</button>
+        </section>
         <section id="document">
             <script type="text/html" id="template">
                 <header>
@@ -25,10 +45,10 @@
                     Quittance de loyer du mois de {{month_payment}}  {{year_payment}}
                 </p>
                 <br />
-                <div id="adress" class="border1">
+                <div id="layout_adress" class="border1">
                     <span class="bold underline">Adresse de la location :</span><br /><br />
                     {{adress}}<br />
-                    {{cp}} {{Ville}}<br />
+                    {{cp}} {{city}}<br />
                 </div>
                 <br /><br />
                 <p>
@@ -57,18 +77,50 @@ la somme de  {{sum}}  / {{sum_number}} euros, au titre du paiement du loyer et d
             </script>
         </section>
         <script>
+            var keyLocalStorage = 'quittance_infos';
             var Model = function(){
                 this.month_payment = '';
                 this.year_payment = '';
                 this.adress = '';
                 this.cp = '';
+                this.city = '';
+                this.owner = '';
+                this.tenant = '';
+                this.montant_tenant = '';
+                this.montant_provision = '';
                 //TODO
+            };
+            
+            Model.prototype.init = function(){
+                if(window.localStorage){
+                    var infos = JSON.parse(window.localStorage.getItem(keyLocalStorage));
+                    for(var key in infos){
+                        if(typeof this[key] !== 'undefined'){
+                            this[key] = infos[key];
+                        }
+                        if(document.getElementById(key) !== null){
+                            document.getElementById(key).value = this[key];
+                        }
+                    }
+                }
+            };
+            
+            
+            Model.prototype.sync = function(){
+                if(window.localStorage){
+                    for(var key in this){
+                        this[key] = (document.getElementById(key) !== null) ? document.getElementById(key).value : '';
+                    }
+                    console.dir(this);
+                    window.localStorage.setItem(keyLocalStorage, JSON.stringify(this));
+                }
             };
             
             var View = function(el, target){
                 this.el = el;
                 this.target = target;
-            }
+            };
+            
             View.prototype.render = function(model){
                 var template = this.el.innerHTML;
                 for(var key in model){
@@ -76,25 +128,34 @@ la somme de  {{sum}}  / {{sum_number}} euros, au titre du paiement du loyer et d
                     template = template.replace(reg, model[key]);    
                 }
                 this.target.innerHTML = template;
-            }
+            };
     
             var Controller = function(model, view){
                 this.model = model;
                 this.view = view;
-            }
+            };
+            
             Controller.prototype.addEvent = function(element, type, fn){
                 element.addEventListener(type, fn, false);
-            }
+            };
             Controller.prototype.onValidate = function(){
                 this.view.render(this.model);
                 window.print();
-            }
+            };
+            Controller.prototype.onSave = function(){
+                this.model.sync();
+            };
+            Controller.prototype.onLoad = function(){
+                this.model.init();
+            };            
             
             var model = new Model(),
                 view = new View(document.getElementById('template'), document.getElementById('document')),
                 mainController = new Controller(model, view);
-                mainController.addEvent(document.getElementById('validate'), 'click', mainController.onValidate.bind(mainController));
-                
+            
+            mainController.addEvent(document.getElementById('validate'), 'click', mainController.onValidate.bind(mainController));
+            mainController.addEvent(document.getElementById('save'), 'click', mainController.onSave.bind(mainController));
+            mainController.addEvent(document, 'DOMContentLoaded', mainController.onLoad.bind(mainController));
         </script>
     </body>
 </html>
