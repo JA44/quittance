@@ -87,6 +87,7 @@ la somme de  {{sum}}  / {{sum_number}} euros, au titre du paiement du loyer et d
             }
             Controller.prototype.onValidate = function(){
                 this.view.render(this.model);
+                window.print();
             }
             
             var model = new Model(),
