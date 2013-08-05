@@ -1,0 +1,69 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div id="test"></div>
+        <script src="number2letter.js"></script>
+        <script>
+            var divTest = document.getElementById('test');
+            var total, counter;
+            total = counter = 0;
+            function summary(){
+                var divSummary = document.createElement('div');
+                divSummary.innerHTML = 'Bilan : ' + counter + '/' + total + ' (' + Math.round(counter/total * 100)  + '%)';
+                divTest.insertBefore(divSummary, divTest.firstChild);
+            }
+            
+            function equal(result, expected){
+                total++;
+                var rslt = (result === expected);
+                ok(rslt, expected + (rslt ? '' : ' << ' + result));
+            }
+    
+            function ok(rslt, comment){
+                if(rslt) counter++;
+                var divAssert = document.createElement('div');
+                divAssert.style.backgroundColor = rslt ? 'green' : 'red';
+                divAssert.innerHTML = comment;
+                divTest.appendChild(divAssert);
+            }
+            equal(number2letter.convert(2), 'deux');
+            equal(number2letter.convert(9), 'neuf');
+            equal(number2letter.convert(10), 'dix');
+            equal(number2letter.convert(12), 'douze');
+            equal(number2letter.convert(17), 'dix-sept');
+            equal(number2letter.convert(20), 'vingt');
+            equal(number2letter.convert(21), 'vingt-et-un');
+            equal(number2letter.convert(22), 'vingt deux');
+            equal(number2letter.convert(30), 'trente');
+            equal(number2letter.convert(40), 'quarante');
+            equal(number2letter.convert(41), 'quarante-et-un');
+            equal(number2letter.convert(50), 'cinquante');
+            equal(number2letter.convert(51), 'cinquante-et-un');
+            equal(number2letter.convert(60), 'soixante');
+            equal(number2letter.convert(61), 'soixante-et-un');
+            equal(number2letter.convert(70), 'soixante-dix');
+            equal(number2letter.convert(71), 'soixante-et-onze');
+            equal(number2letter.convert(77), 'soixante-dix-sept');
+            equal(number2letter.convert(80), 'quatre-vingt');
+            equal(number2letter.convert(81), 'quatre-vingt-un');
+            equal(number2letter.convert(90), 'quatre-vingt-dix');
+            equal(number2letter.convert(97), 'quatre-vingt-dix-sept');
+            equal(number2letter.convert(100), 'quatre-vingt-dix-sept');
+            equal(number2letter.convert(200), 'deux cents');
+            equal(number2letter.convert(217), 'deux cents dix-sept');
+            equal(number2letter.convert(287), 'deux cent quatre-vingt sept');
+            equal(number2letter.convert(8217897), 'huit million deux cent diz sept mille huit cent quatre-vingt diz sept');
+            equal(number2letter.convert(1272), 'mille deux cent soizante douze');
+            equal(number2letter.convert("200"), 'deux cent'); 
+           summary();
+        </script>
+    </body>
+</html>
