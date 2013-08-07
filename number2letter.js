@@ -1,11 +1,4 @@
 var number2letter = (function(){
-    var convertHundred = function(number){
-        if (number > 100) {
-            
-        }
-        
-    }
-    
     var convertUnity = function(number, suffixe) {
         if (arguments.length === 1) {
             suffixe = false;
@@ -40,31 +33,51 @@ var number2letter = (function(){
         if(thousand === 0){
             return decade;
         }
-        
         var plurial = thousand > 1;
         var sThousant = 'cent';
         
-        if (plurial && decade != '') {
+        if (plurial && decade == '') {
             sThousant += 's';
         }
-        
-        thousand = convertDecade(thousand);
-        return (decade != '') ? thousand + ' ' + sThousant + ' '+ decade : thousand + ' ' + sThousant; 
+        if(thousand == 1) {
+            thousand = '';
+        }else{
+            thousand = convertDecade(thousand) + ' ';
+        }
+        return (decade != '') ? thousand + sThousant + ' '+ decade : thousand + sThousant; 
     }
     
     var convertDecade = function(number) {
         var decade = '';
         if (number >= 90) {
             decade = 'quatre-vingt';
-            return decade + convertUnity(number - 90);
+            if (number >= 90 && number < 97) {
+                decade += '-';
+                if(number > 90) decade += '-';
+                decade += convertDecade(number - 80);
+            }
+            if (number >= 97) {
+                decade += '-';
+                decade += convertDecade(number - 80);
+            }
+            return decade;
         }
         if (number >= 80) {
             decade = 'quatre-vingt';
+            if(number > 80) decade+= '-';
             return decade + convertUnity(number - 80);
         }
         if (number >= 70) {
             decade = 'soixante-dix';
-            return decade + convertUnity(number - 70);
+            if (number > 70 && number < 77) {
+                decade = 'soixante-et-';
+                decade += convertDecade(number - 60);
+            }
+            if (number >= 77) {
+                decade += '-';
+                decade += convertUnity(number - 70);
+            }
+            return decade;
         }
         if (number >= 60) {
             decade = 'soixante';
